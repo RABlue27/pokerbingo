@@ -1,70 +1,35 @@
-# Getting Started with Create React App
+# Poker Bingo React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
+Welcome to Poker Bingo, a fun and engaging React app that challenges you to fill a 5x5 board with playing cards and calculates the score of your lines.
 
-## Available Scripts
+## How to Play
+1. Visit the [Poker Bingo App](https://pokerbingo.vercel.app/) website.
+2. Drag and drop playing cards onto the 5x5 board to create lines.
+3. The app automatically calculates your score based on the poker hands formed in each line.
 
-In the project directory, you can run:
+## Features
+- Intuitive drag-and-drop interface.
+- Real-time scoring for each line on the board.
+- Endless possibilities for creating unique poker hands.
 
-### `npm start`
+## Technologies Used
+- React
+- [React DnD](https://react-dnd.github.io/react-dnd/) for drag-and-drop functionality.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Installation
+1. Clone the repository: `git clone https://github.com/your-username/poker-bingo.git`
+2. Navigate to the project folder: `cd poker-bingo`
+3. Install dependencies: `npm install`
+4. Start the app: `npm start`
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Deployment
+The app is deployed on [Vercel](https://vercel.com/). Any changes pushed to the main branch will trigger an automatic deployment.
 
-### `npm test`
+## Contributing
+Feel free to contribute to the development of Poker Bingo by submitting pull requests or reporting issues on the [GitHub repository](https://github.com/your-username/poker-bingo).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Feedback
+If you have any feedback or suggestions, please let us know by creating an issue on the GitHub repository.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Have fun playing Poker Bingo!
