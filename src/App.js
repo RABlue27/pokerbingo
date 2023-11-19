@@ -2,10 +2,36 @@ import React, { useState } from 'react';
 import './Grid.css';
 
 const Grid = () => {
-  const [grid, setGrid] = useState(Array(5).fill(Array(5).fill(null)));
+  const [grid, setGrid] = useState(Array(5).fill(Array(5).fill(-1)));
   const [inputNumber, setInputNumber] = useState('');
   const [rowSums, setRowSums] = useState(Array(5).fill(0));
   const [colSums, setColSums] = useState(Array(5).fill(0));
+  const [generatedNumbers, setGeneratedNumbers] = useState([]); // State for storing generated numbers
+
+  const generateRandomNumber = () => {
+    let randomNum;
+    do {
+      randomNum = Math.floor(Math.random() * 52);
+    } while (generatedNumbers.includes(randomNum)); // Generate until a unique number is found
+  
+    const updatedNumbers = [...generatedNumbers, randomNum]; // Add the unique number to the array
+    setGeneratedNumbers(updatedNumbers.sort()); // Update the array of generated numbers
+    setInputNumber(randomNum); // Set the unique number as inputNumber
+  
+    console.log(updatedNumbers); // Print the updated array in the console
+  };
+
+  function mapNumberToCard(number) {
+    const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
+    const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace'];
+      
+    const suitIndex = Math.floor(number / 13);
+    const rankIndex = number % 13;
+      
+    const card = ranks[rankIndex] + ' of ' + suits[suitIndex];
+    return ranks[rankIndex] !== undefined ? card : ''; // Return an empty string if card is undefined
+  }
+  
 
   const handleClick = (row, col) => {
     // Check if the input is a valid number
@@ -39,42 +65,31 @@ const Grid = () => {
   return (
     <div>
       <input
-        type="number"
         placeholder="Enter a number"
-        value={inputNumber}
+        value={mapNumberToCard(inputNumber)}
         onChange={(e) => setInputNumber(e.target.value)}
       />
+      <button onClick={generateRandomNumber}>
+        Generate Unique Random Number
+      </button>
+
       {grid.map((rowArray, rowIndex) => (
         <div key={rowIndex}>
           {rowArray.map((cell, colIndex) => (
             <div
               key={colIndex}
               onClick={() => handleClick(rowIndex, colIndex)}
-              style={{
-                border: '1px solid black',
-                width: '30px',
-                height: '30px',
-                display: 'inline-block',
-                textAlign: 'center',
-                cursor: 'pointer',
-                marginRight: '45px'
-              }}
+              className="cell" // Add the cell class for hover effect
             >
-              {cell}
+              {mapNumberToCard(cell) !== undefined ? mapNumberToCard(cell) : null}
             </div>
           ))}
-          <span style={{ marginLeft: '10px' }}>Row Sum: {rowSums[rowIndex]}</span>
         </div>
       ))}
-      <div>
-        {colSums.map((sum, colIndex) => (
-          <span key={colIndex} style={{ marginRight: '10px' }}>
-            C Sum: {sum}
-          </span>
-        ))}
-      </div>
     </div>
   );
 };
+
+  
 
 export default Grid;

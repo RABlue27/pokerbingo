@@ -1,0 +1,16 @@
+.cell:hover {
+    background-color: lightblue; /* Change this to the color you prefer */
+  }
+
+  .cell {
+    border: 1px solid black;
+    width: 100px; /* Adjust the width to accommodate potential longer text */
+    height: 50px; /* Adjust the height as needed */
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    margin-right: 10px; /* Reduced margin for better spacing */
+    overflow: hidden; /* Hide overflow content */
+    white-space: nowrap; /* Prevent wrapping of text */
+  }
+  
