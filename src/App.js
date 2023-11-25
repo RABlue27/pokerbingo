@@ -38,6 +38,70 @@ const Grid = () => {
     return ranks[rankIndex] !== undefined ? card : ''; // Return an empty string if card is undefined
   }
 
+  function isStraightFlush(numbers) {
+    const sortedNumbers = numbers.sort((a, b) => a - b);
+  
+    const isSequential = sortedNumbers.every((num, index) => {
+      if (index === 0) {
+        return true;
+      }
+      return num === sortedNumbers[index - 1] + 1;
+    });
+  
+    const isSameSuit = sortedNumbers.every(num => num < 13);
+  
+    return isSequential && isSameSuit;
+  }
+  
+  function isQuads(numbers) {
+    const rankCount = {};
+  
+    numbers.forEach(num => {
+      const card = mapNumberToCard(num);
+      const rank = card.split(' ')[0];
+      if (rankCount[rank]) {
+        rankCount[rank]++;
+      } else {
+        rankCount[rank] = 1;
+      }
+    });
+  
+    const values = Object.values(rankCount);
+    return values.includes(4);
+  }
+  
+  function isFullHouse(numbers) {
+    const rankCount = {};
+  
+    numbers.forEach(num => {
+      const card = mapNumberToCard(num);
+      const rank = card.split(' ')[0];
+      if (rankCount[rank]) {
+        rankCount[rank]++;
+      } else {
+        rankCount[rank] = 1;
+      }
+    });
+  
+    const values = Object.values(rankCount);
+    return values.includes(3) && values.includes(2);
+  }
+  
+  function isFlush(numbers) {
+    const sortedNumbers = numbers.sort((a, b) => a - b);
+  
+    const isSequential = sortedNumbers.every((num, index) => {
+      if (index === 0) {
+        return true;
+      }
+      return num === sortedNumbers[index - 1] + 1;
+    });
+  
+    const isSameSuit = sortedNumbers.every(num => num < 13);
+  
+    return true && isSameSuit;
+  }
+
   const checkRowsColumns = () => {
     // Check every row
     grid.forEach((row, rowIndex) => {
@@ -109,6 +173,63 @@ const Grid = () => {
     setColSums(Array(5).fill(0)); // Reset column sums
     setGeneratedNumbers([]); // Clear generated numbers array
   };
+
+
+
+// test functions 
+
+// Test function for checking a royal flush
+function testStraightFlush() {
+  const royalFlush = [8, 9, 10, 11, 12]; // Assuming these card numbers represent a royal flush
+  const notRoyalFlush = [10, 1, 2, 3, 4]; // Not a royal flush
+
+  console.log('Royal Flush Cards:', royalFlush.map(cardNum => mapNumberToCard(cardNum)).join(', '));
+  console.log('Is it a Royal Flush?', isStraightFlush(royalFlush)); // Expected output: true
+  
+  console.log('Not Royal Flush Cards:', notRoyalFlush.map(cardNum => mapNumberToCard(cardNum)).join(', '));
+  console.log('Is it a Royal Flush?', isStraightFlush(notRoyalFlush)); // Expected output: false
+}
+
+// Test function for checking quads
+function testQuads() {
+  const quads = [1, 14, 27, 39, 40]; // Assuming these card numbers represent four of a kind
+  const notQuads = [5, 1, 2, 3, 4]; // Not four of a kind
+
+  console.log('Quads Cards:', quads.map(cardNum => mapNumberToCard(cardNum)).join(', '));
+  console.log('Is it Quads?', isQuads(quads)); // Expected output: true
+  
+  console.log('Not Quads Cards:', notQuads.map(cardNum => mapNumberToCard(cardNum)).join(', '));
+  console.log('Is it Quads?', isQuads(notQuads)); // Expected output: false
+}
+
+// Test function for checking a full house
+function testFullHouse() {
+  const fullHouse = [1, 14, 27, 2, 15]; // Assuming these card numbers represent a full house
+  const notFullHouse = [5, 1, 2, 3, 4]; // Not a full house
+
+  console.log('Full House Cards:', fullHouse.map(cardNum => mapNumberToCard(cardNum)).join(', '));
+  console.log('Is it a Full House?', isFullHouse(fullHouse)); // Expected output: true
+  
+  console.log('Not Full House Cards:', notFullHouse.map(cardNum => mapNumberToCard(cardNum)).join(', '));
+  console.log('Is it a Full House?', isFullHouse(notFullHouse)); // Expected output: false
+}
+
+function testFlush() {
+  const flush = [8, 9, 10, 11, 3]; // Assuming these card numbers represent a royal flush
+  const notflush = [21, 1, 2, 3, 4]; // Not a royal flush
+
+  console.log('Royal Flush Cards:', flush.map(cardNum => mapNumberToCard(cardNum)).join(', '));
+  console.log('Is it a Royal Flush?', isFlush(flush)); // Expected output: true
+  
+  console.log('Not Royal Flush Cards:', notflush.map(cardNum => mapNumberToCard(cardNum)).join(', '));
+  console.log('Is it a Royal Flush?', isFlush(notflush)); // Expected output: false
+}
+
+//test ends
+// testStraightFlush();
+// testQuads();
+// testFullHouse();
+testFlush();
 
   return (
     <div>
