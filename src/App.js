@@ -99,8 +99,74 @@ const Grid = () => {
   
     const isSameSuit = sortedNumbers.every(num => num < 13);
   
-    return true && isSameSuit;
+    return isSameSuit;
   }
+
+  function isStraight(numbers) {
+    const sortedNumbers = numbers.sort((a, b) => a - b);
+  
+    const modNumbers = sortedNumbers.map(num => num % 13).sort();
+
+    let isSequential = true;
+    for (let i = 0; i < modNumbers.length - 1; i++) {
+        if (modNumbers[i + 1] !== modNumbers[i] + 1) {
+            isSequential = false;
+            break;
+        }
+    }
+
+    return isSequential;
+}
+
+  
+function isTrips(numbers) {
+  const rankCount = {};
+  
+  numbers.forEach(num => {
+    const card = mapNumberToCard(num);
+    const rank = card.split(' ')[0];
+    if (rankCount[rank]) {
+      rankCount[rank]++;
+    } else {
+      rankCount[rank] = 1;
+    }
+  });
+
+  const values = Object.values(rankCount);
+  return values.includes(3);
+}
+
+function isTwoPair(numbers) {
+  const rankCount = {};
+  
+  numbers.forEach(num => {
+    const card = mapNumberToCard(num);
+    const rank = card.split(' ')[0];
+    if (rankCount[rank]) {
+      rankCount[rank]++;
+    } else {
+      rankCount[rank] = 1;
+    }
+  });
+
+  const values = Object.values(rankCount);
+  const countOfPairs = values.filter(value => value === 2).length;
+  return countOfPairs === 2;
+}
+
+function isJacksOrBetter(numbers) {
+  const sortedNumbers = numbers.sort((a, b) => a - b);
+  
+  const modNumbers = sortedNumbers.map(num => num % 13).sort();
+
+  for (let i = 0; i < modNumbers.length - 1; i++) {
+    if (modNumbers[i] === modNumbers[i + 1] && modNumbers[i] >= 10) {
+      return true; // Returns true if two of the same number above 10 are found
+    }
+  }
+  return false; // Returns false if no two of the same number above 10 are found
+}
+
 
   const checkRowsColumns = () => {
     // Check every row
@@ -218,18 +284,70 @@ function testFlush() {
   const flush = [8, 9, 10, 11, 3]; // Assuming these card numbers represent a royal flush
   const notflush = [21, 1, 2, 3, 4]; // Not a royal flush
 
-  console.log('Royal Flush Cards:', flush.map(cardNum => mapNumberToCard(cardNum)).join(', '));
-  console.log('Is it a Royal Flush?', isFlush(flush)); // Expected output: true
+  console.log('Flush Cards:', flush.map(cardNum => mapNumberToCard(cardNum)).join(', '));
+  console.log('Is it a  Flush?', isFlush(flush)); // Expected output: true
   
-  console.log('Not Royal Flush Cards:', notflush.map(cardNum => mapNumberToCard(cardNum)).join(', '));
-  console.log('Is it a Royal Flush?', isFlush(notflush)); // Expected output: false
+  console.log('Not Flush Cards:', notflush.map(cardNum => mapNumberToCard(cardNum)).join(', '));
+  console.log('Is it a  Flush?', isFlush(notflush)); // Expected output: false
 }
+
+function testStraight() {
+  const straight = [3, 4, 5, 6, 28].sort(); // Assuming these card numbers represent a royal flush
+  const notStraight = [10, 1, 2, 3, 4]; // Not a royal flush
+
+  console.log('Straight Cards:', straight.map(cardNum => mapNumberToCard(cardNum)).join(', '));
+  console.log('Is it  Straight?', isStraight(straight)); // Expected output: true
+  
+  console.log('Not Straight Cards:', notStraight.map(cardNum => mapNumberToCard(cardNum)).join(', '));
+  console.log('Is it a Not Straight?', isStraight(notStraight)); // Expected output: false
+}
+
+function testTrips() {
+  const notTrips = [2, 14, 27, 39, 40]; // Assuming these card numbers represent four of a kind
+  const notQuads = [5, 1, 2, 3, 4]; // Not four of a kind
+
+  console.log('Trips Cards:', notTrips.map(cardNum => mapNumberToCard(cardNum)).join(', '));
+  console.log('Is it Trips?', isTrips(notTrips)); // Expected output: true
+  
+  console.log('Not Truips Cards:', notQuads.map(cardNum => mapNumberToCard(cardNum)).join(', '));
+  console.log('Is it Trips?', isTrips(notQuads)); // Expected output: false
+}
+
+
+function testTwoPair() {
+  const twoPair = [1, 14, 3, 16, 5]; // Assuming these card numbers represent four of a kind
+  const notTwoPair = [5, 1, 2, 3, 4]; // Not four of a kind
+
+  console.log('Two pair Cards:', twoPair.map(cardNum => mapNumberToCard(cardNum)).join(', '));
+  console.log('Is it two pair?', isTwoPair(twoPair)); // Expected output: true
+  
+  console.log('Not two pair Cards:', notTwoPair.map(cardNum => mapNumberToCard(cardNum)).join(', '));
+  console.log('Is it two pair?', isTwoPair(notTwoPair)); // Expected output: false
+}
+
+function testJacks() {
+  const jacks = [1, 2, 3, 11, 24]; // Assuming these card numbers represent four of a kind
+  const notJacks = [5, 18, 2, 3, 4]; // Not four of a kind
+
+  console.log('Jacks Cards:', jacks.map(cardNum => mapNumberToCard(cardNum)).join(', '));
+  console.log('Is it Jacks?', isJacksOrBetter(jacks)); // Expected output: true
+  
+  console.log('Not Jacks Cards:', notJacks.map(cardNum => mapNumberToCard(cardNum)).join(', '));
+  console.log('Is it Jacks?', isJacksOrBetter(notJacks)); // Expected output: false
+}
+
+
+
 
 //test ends
 // testStraightFlush();
 // testQuads();
 // testFullHouse();
-testFlush();
+// testFlush();
+// testStraight();
+// testTrips();
+// testTwoPair();
+testJacks();
 
   return (
     <div>
