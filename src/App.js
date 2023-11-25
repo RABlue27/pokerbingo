@@ -6,19 +6,22 @@ const Grid = () => {
   const [inputNumber, setInputNumber] = useState('');
   const [rowSums, setRowSums] = useState(Array(5).fill(0));
   const [colSums, setColSums] = useState(Array(5).fill(0));
-  const [generatedNumbers, setGeneratedNumbers] = useState([]); // State for storing generated numbers
+  const [generatedNumbers, setGeneratedNumbers] = useState([]);
+  const [used, setUsed] = useState([]);
 
   const generateRandomNumber = () => {
     let randomNum;
     do {
       randomNum = Math.floor(Math.random() * 52);
-    } while (generatedNumbers.includes(randomNum)); // Generate until a unique number is found
+    } while (used.includes(randomNum));
   
-    const updatedNumbers = [...generatedNumbers, randomNum]; // Add the unique number to the array
-    setGeneratedNumbers(updatedNumbers.sort()); // Update the array of generated numbers
-    setInputNumber(randomNum); // Set the unique number as inputNumber
+    const updatedNumbers = [...generatedNumbers, randomNum];
+    setGeneratedNumbers(updatedNumbers.sort());
+    setInputNumber(randomNum);
+    setUsed(prevUsed => [...prevUsed, randomNum]); // Append randomNum to the used array
   
-    console.log(updatedNumbers); // Print the updated array in the console
+    console.log(updatedNumbers);
+    checkRowsColumns();
   };
 
   function mapNumberToCard(number) {
@@ -35,7 +38,29 @@ const Grid = () => {
     return ranks[rankIndex] !== undefined ? card : ''; // Return an empty string if card is undefined
   }
 
+  const checkRowsColumns = () => {
+    // Check every row
+    grid.forEach((row, rowIndex) => {
+      const isRowFull = row.every(cell => cell !== -1);
+      if (isRowFull) {
+        console.log(`Row ${rowIndex + 1} is full`);
+      }
+    });
   
+    // Check every column
+    for (let colIndex = 0; colIndex < grid[0].length; colIndex++) {
+      let isColFull = true;
+      for (let rowIndex = 0; rowIndex < grid.length; rowIndex++) {
+        if (grid[rowIndex][colIndex] === -1) {
+          isColFull = false;
+          break;
+        }
+      }
+      if (isColFull) {
+        console.log(`Column ${colIndex + 1} is full`);
+      }
+    }
+  };
   
 
   const handleClick = (row, col) => {
@@ -71,7 +96,12 @@ const Grid = () => {
       newGrid.reduce((sum, rowArray) => sum + (rowArray[colIndex] || 0), 0)
     );
     setColSums(newColSums);
+  
+    // Reset generatedNumbers to enable the button
+    setGeneratedNumbers([]);
+
   };
+  
   const clearGrid = () => {
     setGrid(Array(5).fill(Array(5).fill(-1))); // Reset the grid to its initial state
     setInputNumber(''); // Clear the input field
@@ -87,9 +117,10 @@ const Grid = () => {
         value={mapNumberToCard(inputNumber)}
         onChange={(e) => setInputNumber(e.target.value)}
       />
-      <button onClick={generateRandomNumber}>
-        Generate Unique Random Number
-      </button>
+<button onClick={generateRandomNumber} disabled={generatedNumbers.length > 0}>
+  Generate Unique Random Number
+</button>
+
       <button onClick={clearGrid}>
         Clear Grid
       </button>
@@ -111,7 +142,5 @@ const Grid = () => {
   );
 };
 
-
-  
 
 export default Grid;
