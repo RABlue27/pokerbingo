@@ -20,8 +20,7 @@ const Grid = () => {
     setInputNumber(randomNum);
     setUsed(prevUsed => [...prevUsed, randomNum]); // Append randomNum to the used array
   
-    console.log(updatedNumbers);
-    checkRowsColumns();
+    // console.log(updatedNumbers);
   };
 
   function mapNumberToCard(number) {
@@ -158,7 +157,7 @@ function isJacksOrBetter(numbers) {
   const sortedNumbers = numbers.sort((a, b) => a - b);
   
   const modNumbers = sortedNumbers.map(num => num % 13).sort();
-
+  
   for (let i = 0; i < modNumbers.length - 1; i++) {
     if (modNumbers[i] === modNumbers[i + 1] && modNumbers[i] >= 10) {
       return true; // Returns true if two of the same number above 10 are found
@@ -167,30 +166,73 @@ function isJacksOrBetter(numbers) {
   return false; // Returns false if no two of the same number above 10 are found
 }
 
+function checkResult(numbers) {
+  if (numbers.includes(-1)) {
+    return 0;
+  }
+  if (isStraightFlush(numbers)) {
+    console.log('Type: Straight Flush');
+    return 4000;
+  }
+  if (isQuads(numbers)) {
+    console.log('Type: Quads');
+    return 125;
+  }
+  if (isFullHouse(numbers)) {
+    console.log('Type: Full House');
+    return 35;
+  }
+  if (isFlush(numbers)) {
+    console.log('Type: Flush');
+    return 30;
+  }
+  if (isStraight(numbers)) {
+    console.log('Type: Straight');
+    return 20;
+  }
+  if (isTrips(numbers)) {
+    console.log('Type: Trips');
+    return 15;
+  }
+  if (isTwoPair(numbers)) {
+    console.log('Type: Two Pair');
+    return 10;
+  }
+  if (isJacksOrBetter(numbers)) {
+    console.log('Type: Jacks or Better');
+    return 5;
+  }
+  console.log('Type: None matched');
+  return 0;
+}
 
-  const checkRowsColumns = () => {
-    // Check every row
-    grid.forEach((row, rowIndex) => {
-      const isRowFull = row.every(cell => cell !== -1);
-      if (isRowFull) {
-        console.log(`Row ${rowIndex + 1} is full`);
-      }
-    });
-  
-    // Check every column
-    for (let colIndex = 0; colIndex < grid[0].length; colIndex++) {
-      let isColFull = true;
-      for (let rowIndex = 0; rowIndex < grid.length; rowIndex++) {
-        if (grid[rowIndex][colIndex] === -1) {
-          isColFull = false;
-          break;
-        }
-      }
-      if (isColFull) {
-        console.log(`Column ${colIndex + 1} is full`);
-      }
+
+const checkRowsColumns = () => {
+  let result = 0;
+  const rowArrays = grid.slice(); // Assuming grid is defined elsewhere
+  const columnArrays = [];
+
+  for (let i = 0; i < grid.length; i++) {
+    const columnArray = [];
+    for (let j = 0; j < grid[i].length; j++) {
+      columnArray.push(grid[j][i]); // Push elements from each column to columnArray
     }
-  };
+    columnArrays.push(columnArray); // Push each columnArray to columnArrays
+  }
+
+  for (let r = 0; r < rowArrays.length; r++) {
+    result += checkResult(rowArrays[r]);
+  }
+
+  for (let c = 0; c < columnArrays.length; c++) {
+    result += checkResult(columnArrays[c]);
+  }
+
+  console.log("Score: ", result);
+};
+
+
+
   
 
   const handleClick = (row, col) => {
@@ -336,9 +378,6 @@ function testJacks() {
   console.log('Is it Jacks?', isJacksOrBetter(notJacks)); // Expected output: false
 }
 
-
-
-
 //test ends
 // testStraightFlush();
 // testQuads();
@@ -347,7 +386,7 @@ function testJacks() {
 // testStraight();
 // testTrips();
 // testTwoPair();
-testJacks();
+// testJacks();
 
   return (
     <div>
@@ -362,6 +401,10 @@ testJacks();
 
       <button onClick={clearGrid}>
         Clear Grid
+      </button>
+
+      <button onClick={checkRowsColumns}>
+          Check Results
       </button>
 
       {grid.map((rowArray, rowIndex) => (
