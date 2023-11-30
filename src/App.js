@@ -410,7 +410,7 @@ return (
     <button onClick={refreshPage}>Refresh Page</button>
 
     <button onClick={checkRowsColumns}>
-      Start a new game
+      Check Score
     </button>
 
     {grid.map((rowArray, rowIndex) => (
