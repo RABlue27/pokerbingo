@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import CardComponent from './CardComponent';
 import './Grid.css';
 
 const Grid = () => {
@@ -384,6 +385,8 @@ const refreshPage = () => {
   window.location.reload();
 };
 
+
+
 //test ends
 // testStraightFlush();
 // testQuads();
@@ -394,38 +397,40 @@ const refreshPage = () => {
 // testTwoPair();
 // testJacks();
 
-  return (
-    <div>
-      <input
-        placeholder="Enter a number"
-        value={mapNumberToCard(inputNumber)}
-        onChange={(e) => setInputNumber(e.target.value)}
-      />
-<button onClick={generateRandomNumber} disabled={generatedNumbers.length > 0}>
-  Start Game
-</button>
-
-<button onClick={refreshPage}>Refresh Page</button>
-
-      <button onClick={checkRowsColumns}>
-          Start a new game
-      </button>
-
-      {grid.map((rowArray, rowIndex) => (
-        <div key={rowIndex}>
-          {rowArray.map((cell, colIndex) => (
-            <div
-              key={colIndex}
-              onClick={() => handleClick(rowIndex, colIndex)}
-              className="cell" // Add the cell class for hover effect
-            >
-              {mapNumberToCard(cell) !== undefined ? mapNumberToCard(cell) : null}
-            </div>
-          ))}
-        </div>
-      ))}
+return (
+  <div>
+    <div className='drawn'>
+      <CardComponent number={inputNumber} />
     </div>
-  );
+
+    <button onClick={generateRandomNumber} disabled={generatedNumbers.length > 0}>
+      Start Game
+    </button>
+
+    <button onClick={refreshPage}>Refresh Page</button>
+
+    <button onClick={checkRowsColumns}>
+      Start a new game
+    </button>
+
+    {grid.map((rowArray, rowIndex) => (
+      <div key={rowIndex}>
+        {rowArray.map((cell, colIndex) => (
+          <div
+            key={colIndex}
+            onClick={() => handleClick(rowIndex, colIndex)}
+            className="cell" // Add the cell class for hover effect
+          >
+            {cell !== undefined ? (
+              <CardComponent number={cell} />
+            ) : null}
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+);
+
 };
 
 
