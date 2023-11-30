@@ -12,16 +12,17 @@ const Grid = () => {
   const generateRandomNumber = () => {
     let randomNum;
     do {
-      randomNum = Math.floor(Math.random() * 52);
+      randomNum = Math.floor(Math.random() * 51) + 1; // Generates random number between 1 and 52
     } while (used.includes(randomNum));
   
     const updatedNumbers = [...generatedNumbers, randomNum];
     setGeneratedNumbers(updatedNumbers.sort());
     setInputNumber(randomNum);
     setUsed(prevUsed => [...prevUsed, randomNum]); // Append randomNum to the used array
-  
+    console.log(randomNum)
     // console.log(updatedNumbers);
   };
+  
 
   function mapNumberToCard(number) {
     if (number <= 0) {
@@ -228,12 +229,12 @@ const checkRowsColumns = () => {
     result += checkResult(columnArrays[c]);
   }
 
+  alert("You scored: " + result);
+
   console.log("Score: ", result);
+
 };
 
-
-
-  
 
   const handleClick = (row, col) => {
     // Check if the input is a valid number
@@ -271,6 +272,7 @@ const checkRowsColumns = () => {
   
     // Reset generatedNumbers to enable the button
     setGeneratedNumbers([]);
+    generateRandomNumber();
 
   };
   
@@ -378,6 +380,10 @@ function testJacks() {
   console.log('Is it Jacks?', isJacksOrBetter(notJacks)); // Expected output: false
 }
 
+const refreshPage = () => {
+  window.location.reload();
+};
+
 //test ends
 // testStraightFlush();
 // testQuads();
@@ -396,15 +402,13 @@ function testJacks() {
         onChange={(e) => setInputNumber(e.target.value)}
       />
 <button onClick={generateRandomNumber} disabled={generatedNumbers.length > 0}>
-  Generate Unique Random Number
+  Start Game
 </button>
 
-      <button onClick={clearGrid}>
-        Clear Grid
-      </button>
+<button onClick={refreshPage}>Refresh Page</button>
 
       <button onClick={checkRowsColumns}>
-          Check Results
+          Start a new game
       </button>
 
       {grid.map((rowArray, rowIndex) => (

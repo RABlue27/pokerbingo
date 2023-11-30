@@ -1,16 +1,25 @@
 .cell:hover {
-    background-color: lightblue; /* Change this to the color you prefer */
-  }
+  background-color: lightblue; /* Change this to the color you prefer */
+}
 
-  .cell {
-    border: 1px solid black;
-    width: 100px; /* Adjust the width to accommodate potential longer text */
-    height: 50px; /* Adjust the height as needed */
-    display: inline-block;
-    text-align: center;
-    cursor: pointer;
-    margin-right: 10px; /* Reduced margin for better spacing */
-    overflow: hidden; /* Hide overflow content */
-    white-space: nowrap; /* Prevent wrapping of text */
-  }
-  
+.cell {
+  border: 1px solid black;
+  width: 100px; /* Adjust the width to accommodate potential longer text */
+  height: 50px; /* Adjust the height as needed */
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  margin-right: 10px; /* Reduced margin for better spacing */
+  overflow: hidden; /* Hide overflow content */
+  white-space: nowrap; /* Prevent wrapping of text */
+}
+
+/* Add this CSS code in your stylesheet or inside a style tag */
+
+.results-container {
+  background-color: #f0f0f0; /* Change this color to your preferred background color */
+  padding: 10px;
+  margin-top: 10px; /* Adjust margin as needed */
+  border-radius: 5px; /* Optional: Add rounded corners */
+  /* Other styling properties you may want */
+}
