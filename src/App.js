@@ -20,7 +20,7 @@ const Grid = () => {
   const [currentScore, setCurrentScore] = useState(0);
   const [played, setPlayed] = useState(0);
   const [isGameOver, setGameOver] = useState(false);
-  const [totalResults, setTotalResults] = useState([]);
+  const [results, setResults] = useState([]);
 
   const generateRandomNumber = () => {
     let randomNum;
@@ -38,33 +38,34 @@ const Grid = () => {
   
 
 
-function checkResult(numbers) {
-  const checkFunctions = [
-    { func: isStraightFlush, message: 'Straight Flush', reward: 100 },
-    { func: isQuads, message: 'Quads', reward: 50 },
-    { func: isFullHouse, message: 'Full House', reward: 35 },
-    { func: isFlush, message: 'Flush', reward: 30 },
-    { func: isStraight, message: 'Straight', reward: 20 },
-    { func: isTrips, message: 'Trips', reward: 15 },
-    { func: isTwoPair, message: 'Two Pair', reward: 10 },
-    { func: isJacksOrBetter, message: 'Jacks or Better', reward: 5 },
-  ];
+  function checkResult(numbers) {
+    const checkFunctions = [
+      { func: isStraightFlush, message: 'Straight Flush', reward: 100 },
+      { func: isQuads, message: 'Quads', reward: 50 },
+      { func: isFullHouse, message: 'Full House', reward: 35 },
+      { func: isFlush, message: 'Flush', reward: 30 },
+      { func: isStraight, message: 'Straight', reward: 20 },
+      { func: isTrips, message: 'Trips', reward: 15 },
+      { func: isTwoPair, message: 'Two Pair', reward: 10 },
+      { func: isJacksOrBetter, message: 'Jacks or Better', reward: 5 },
+    ];
 
-  if (numbers.includes(-1)) {
+    if (numbers.includes(-1)) {
+      // setResults([...results, { type: 'Invalid input', reward: 0 }]);
+      return 0;
+    }
+
+    for (const checkFunction of checkFunctions) {
+      if (checkFunction.func(numbers)) {
+        const result = { type: checkFunction.message, reward: checkFunction.reward };
+        setResults([...results, result]);
+        console.log("results: ", results)
+        return checkFunction.reward;
+      }
+    }
+
     return 0;
   }
-
-  for (const checkFunction of checkFunctions) {
-    if (checkFunction.func(numbers)) {
-      console.log(`Type: ${checkFunction.message}`);
-      return checkFunction.reward;
-    }
-  }
-
-  console.log('Type: None matched');
-  return 0;
-}
-
 
 
 const checkRowsColumns = () => {
@@ -185,9 +186,13 @@ return (
       </div>
     ))}
 
-  <div>
-    {totalResults}
-  </div>
+<div>
+  {results.map((result, index) => (
+    <p key={index}>
+      Type: {result.type}, Reward: {result.reward}
+    </p>
+  ))}
+</div>
 
   </div>
 );
