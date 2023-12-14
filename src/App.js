@@ -15,11 +15,12 @@ import {
 const Grid = () => {
   const [grid, setGrid] = useState(Array(5).fill(Array(5).fill(-1)));
   const [inputNumber, setInputNumber] = useState('');
-  const [rowSums, setRowSums] = useState(Array(5).fill(0));
-  const [colSums, setColSums] = useState(Array(5).fill(0));
   const [generatedNumbers, setGeneratedNumbers] = useState([]);
   const [used, setUsed] = useState([]);
   const [currentScore, setCurrentScore] = useState(0);
+  const [played, setPlayed] = useState(0);
+  const [isGameOver, setGameOver] = useState(false);
+  const [totalResults, setTotalResults] = useState([]);
 
   const generateRandomNumber = () => {
     let randomNum;
@@ -37,12 +38,10 @@ const Grid = () => {
   
 
 
-
-
 function checkResult(numbers) {
   const checkFunctions = [
-    { func: isStraightFlush, message: 'Straight Flush', reward: 4000 },
-    { func: isQuads, message: 'Quads', reward: 125 },
+    { func: isStraightFlush, message: 'Straight Flush', reward: 100 },
+    { func: isQuads, message: 'Quads', reward: 50 },
     { func: isFullHouse, message: 'Full House', reward: 35 },
     { func: isFlush, message: 'Flush', reward: 30 },
     { func: isStraight, message: 'Straight', reward: 20 },
@@ -73,6 +72,7 @@ const checkRowsColumns = () => {
   const rowArrays = grid.slice(); // Assuming grid is defined elsewhere
   const columnArrays = [];
 
+  // Create column arrays
   for (let i = 0; i < grid.length; i++) {
     const columnArray = [];
     for (let j = 0; j < grid[i].length; j++) {
@@ -81,20 +81,25 @@ const checkRowsColumns = () => {
     columnArrays.push(columnArray); // Push each columnArray to columnArrays
   }
 
+  // Process rows
   for (let r = 0; r < rowArrays.length; r++) {
+    rowArrays[r].sort((a, b) => a - b); // Sorting each row array
     result += checkResult(rowArrays[r]);
   }
 
+  // Process columns
   for (let c = 0; c < columnArrays.length; c++) {
+    columnArrays[c].sort((a, b) => a - b); // Sorting each column array
     result += checkResult(columnArrays[c]);
   }
 
   setCurrentScore(result);
-
 };
 
 
+
   const handleClick = (row, col) => {
+
     // Check if the input is a valid number
     const number = parseInt(inputNumber, 10);
     if (isNaN(number)) {
@@ -108,6 +113,8 @@ const checkRowsColumns = () => {
       return;
     }
   
+    setPlayed(played => played + 1);
+
     // Update the grid with the input number
     const newGrid = grid.map((rowArray, rowIndex) =>
       rowArray.map((cell, colIndex) =>
@@ -117,34 +124,18 @@ const checkRowsColumns = () => {
     setGrid(newGrid);
     setInputNumber(''); // Clear the input after setting the number
   
-    // Update row and column sums
-    const newRowSums = newGrid.map((rowArray) =>
-      rowArray.reduce((sum, cell) => sum + (cell || 0), 0)
-    );
-    setRowSums(newRowSums);
-  
-    const newColSums = newGrid[0].map((_, colIndex) =>
-      newGrid.reduce((sum, rowArray) => sum + (rowArray[colIndex] || 0), 0)
-    );
-    setColSums(newColSums);
-  
-    // Reset generatedNumbers to enable the button
-    
     checkRowsColumns();
-    setGeneratedNumbers([]);
+    // Reset generatedNumbers to enable the button
+    if (played >= 24) {
+      setGameOver(true);
+      return;
+    }
     generateRandomNumber();
 
+
+
   };
   
-  const clearGrid = () => {
-    setGrid(Array(5).fill(Array(5).fill(-1))); // Reset the grid to its initial state
-    setInputNumber(''); // Clear the input field
-    setRowSums(Array(5).fill(0)); // Reset row sums
-    setColSums(Array(5).fill(0)); // Reset column sums
-    setGeneratedNumbers([]); // Clear generated numbers array
-  };
-
-
 
 const refreshPage = () => {
   window.location.reload();
@@ -164,12 +155,18 @@ return (
 
     <button onClick={refreshPage}>Refresh Page</button>
 
+   
     {/* <button onClick={checkRowsColumns}>
-      Check Score
+      Check Score 
     </button> */}
+
 
     <div>
       Current Score: {currentScore}
+    </div>
+
+    <div>
+        Game Over: {isGameOver ? 'Yes' : 'No'} 
     </div>
 
     {grid.map((rowArray, rowIndex) => (
@@ -178,7 +175,7 @@ return (
           <div
             key={colIndex}
             onClick={() => handleClick(rowIndex, colIndex)}
-            className="cell" // Add the cell class for hover effect
+            className="cell" 
           >
             {cell !== undefined ? (
               <CardComponent number={cell} />
@@ -187,6 +184,11 @@ return (
         ))}
       </div>
     ))}
+
+  <div>
+    {totalResults}
+  </div>
+
   </div>
 );
 
