@@ -19,6 +19,7 @@ const Grid = () => {
   const [colSums, setColSums] = useState(Array(5).fill(0));
   const [generatedNumbers, setGeneratedNumbers] = useState([]);
   const [used, setUsed] = useState([]);
+  const [currentScore, setCurrentScore] = useState(0);
 
   const generateRandomNumber = () => {
     let randomNum;
@@ -88,9 +89,7 @@ const checkRowsColumns = () => {
     result += checkResult(columnArrays[c]);
   }
 
-  alert("You scored: " + result);
-
-  console.log("Score: ", result);
+  setCurrentScore(result);
 
 };
 
@@ -130,6 +129,8 @@ const checkRowsColumns = () => {
     setColSums(newColSums);
   
     // Reset generatedNumbers to enable the button
+    
+    checkRowsColumns();
     setGeneratedNumbers([]);
     generateRandomNumber();
 
@@ -163,9 +164,13 @@ return (
 
     <button onClick={refreshPage}>Refresh Page</button>
 
-    <button onClick={checkRowsColumns}>
+    {/* <button onClick={checkRowsColumns}>
       Check Score
-    </button>
+    </button> */}
+
+    <div>
+      Current Score: {currentScore}
+    </div>
 
     {grid.map((rowArray, rowIndex) => (
       <div key={rowIndex}>
