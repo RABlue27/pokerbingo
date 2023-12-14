@@ -49,23 +49,24 @@ const Grid = () => {
       { func: isTwoPair, message: 'Two Pair', reward: 10 },
       { func: isJacksOrBetter, message: 'Jacks or Better', reward: 5 },
     ];
-
+  
+    let currentReward = 0;
+  
     if (numbers.includes(-1)) {
-      // setResults([...results, { type: 'Invalid input', reward: 0 }]);
       return 0;
     }
-
+  
     for (const checkFunction of checkFunctions) {
       if (checkFunction.func(numbers)) {
         const result = { type: checkFunction.message, reward: checkFunction.reward };
-        setResults([...results, result]);
-        console.log("results: ", results)
+        setCurrentScore(checkFunction.reward);
         return checkFunction.reward;
       }
     }
-
+  
     return 0;
   }
+  
 
 
 const checkRowsColumns = () => {
@@ -186,13 +187,7 @@ return (
       </div>
     ))}
 
-<div>
-  {results.map((result, index) => (
-    <p key={index}>
-      Type: {result.type}, Reward: {result.reward}
-    </p>
-  ))}
-</div>
+
 
   </div>
 );
