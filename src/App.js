@@ -26,6 +26,7 @@ const Grid = () => {
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
+    document.title = "Video Poker";
     const currentDate = new Date();
     const dayOfMonth = currentDate.getDate();
     setSeed(10000);
