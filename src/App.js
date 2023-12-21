@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CardComponent from './CardComponent';
 import './Grid.css';
 import {
@@ -11,6 +11,7 @@ import {
   isTwoPair,
   isJacksOrBetter,
 } from './PokerFunctions';
+import seedrandom from 'seedrandom';
 
 const Grid = () => {
   const [grid, setGrid] = useState(Array(5).fill(Array(5).fill(-1)));
@@ -21,21 +22,27 @@ const Grid = () => {
   const [played, setPlayed] = useState(0);
   const [isGameOver, setGameOver] = useState(false);
   const [results, setResults] = useState([]);
+  const [seed, setSeed] = useState(1);
 
-  const generateRandomNumber = () => {
+  useEffect(() => {
+    const currentDate = new Date();
+    const dayOfMonth = currentDate.getDate();
+    setSeed(0);
+  }, []);
+
+  const generateRandomNumber = (seed) => {
+    const rng = seedrandom(seed);
     let randomNum;
+    const used = []; 
     do {
-      randomNum = Math.floor(Math.random() * 51) + 1; // Generates random number between 1 and 52
+      randomNum = Math.floor(rng() * 51) + 1; 
     } while (used.includes(randomNum));
   
     const updatedNumbers = [...generatedNumbers, randomNum];
     setGeneratedNumbers(updatedNumbers.sort());
     setInputNumber(randomNum);
-    setUsed(prevUsed => [...prevUsed, randomNum]); // Append randomNum to the used array
-    console.log(randomNum)
-    // console.log(updatedNumbers);
+    setUsed((prevUsed) => [...prevUsed, randomNum]);
   };
-  
 
 
   function checkResult(numbers) {
@@ -101,7 +108,6 @@ const checkRowsColumns = () => {
 
 
   const handleClick = (row, col) => {
-
     // Check if the input is a valid number
     const number = parseInt(inputNumber, 10);
     if (isNaN(number)) {
@@ -132,7 +138,8 @@ const checkRowsColumns = () => {
       setGameOver(true);
       return;
     }
-    generateRandomNumber();
+    generateRandomNumber(seed);
+    setSeed(prevSeed => prevSeed + 1);
 
 
 
@@ -165,6 +172,7 @@ return (
 
     <div>
       Current Score: {currentScore}
+      
     </div>
 
     <div>
