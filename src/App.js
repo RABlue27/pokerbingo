@@ -23,11 +23,12 @@ const Grid = () => {
   const [isGameOver, setGameOver] = useState(false);
   const [results, setResults] = useState([]);
   const [seed, setSeed] = useState(1);
+  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
     const currentDate = new Date();
     const dayOfMonth = currentDate.getDate();
-    setSeed(0);
+    setSeed(10000);
   }, []);
 
   const generateRandomNumber = (seed) => {
@@ -151,6 +152,17 @@ const refreshPage = () => {
 };
 
 
+const handleSeedInputChange = (event) => {
+  setInputValue(event.target.value);
+};
+
+const handleSeedButtonClick = () => {
+  const seedAsNumber = parseInt(inputValue, 10); 
+  setSeed(seedAsNumber);
+};
+
+
+
 
 return (
   <div>
@@ -195,7 +207,17 @@ return (
       </div>
     ))}
 
+    <div>
+    <input
+        type="number"
+        value={inputValue}
+        onChange={handleSeedInputChange}
+        placeholder="Enter seed"
+        />
+        <button onClick={handleSeedButtonClick}>Set Seed</button>
+    </div>
 
+      <div> {seed} </div>
 
   </div>
 );
