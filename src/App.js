@@ -24,6 +24,7 @@ const Grid = () => {
   const [results, setResults] = useState([]);
   const [seed, setSeed] = useState(1);
   const [inputValue, setInputValue] = useState('');
+  const [deck, setDeck] = useState(Array.from({ length: 52 }, (_, index) => index + 1));
 
   useEffect(() => {
     document.title = "Video Poker";
@@ -32,20 +33,52 @@ const Grid = () => {
     setSeed(10000);
   }, []);
 
-  const generateRandomNumber = (seed) => {
-    const rng = seedrandom(seed);
-    let randomNum;
-    const used = []; 
-    do {
-      randomNum = Math.floor(rng() * 51) + 1; 
-    } while (used.includes(randomNum));
+  // const generateRandomNumber = (seed) => {
+  //   const rng = seedrandom(seed);
+  //   let randomNum;
+  //   const used = []; 
+  //   do {
+  //     randomNum = Math.floor(rng() * 51) + 1; 
+  //   } while (used.includes(randomNum));
   
-    const updatedNumbers = [...generatedNumbers, randomNum];
-    setGeneratedNumbers(updatedNumbers.sort());
-    setInputNumber(randomNum);
-    setUsed((prevUsed) => [...prevUsed, randomNum]);
-  };
+  //   const updatedNumbers = [...generatedNumbers, randomNum];
+  //   setGeneratedNumbers(updatedNumbers.sort());
+  //   setInputNumber(randomNum);
+  //   setUsed((prevUsed) => [...prevUsed, randomNum]);
+  // };
 
+  const generateRandomNumber = () => {
+    setInputNumber(deck.pop());
+  }
+  
+  const shuffleDeck = (seesd) => {
+    let s = seed;
+    const shuffledDeck = [...deck];
+    let currentIndex = shuffledDeck.length;
+  
+    // Use the provided seed for random number generation
+    const generateRandomIndex = () => {
+      const x = Math.sin(s++) * 10000;
+      return Math.floor((x - Math.floor(x)) * currentIndex);
+    };
+  
+    while (currentIndex !== 0) {
+      const randomIndex = generateRandomIndex();
+      currentIndex--;
+  
+      const temporaryValue = shuffledDeck[currentIndex];
+      shuffledDeck[currentIndex] = shuffledDeck[randomIndex];
+      shuffledDeck[randomIndex] = temporaryValue;
+    }
+  
+    setDeck(shuffledDeck);
+  };
+  
+
+  
+  function shuffle() {
+    shuffleDeck();
+  }
 
   function checkResult(numbers) {
     const checkFunctions = [
@@ -110,6 +143,7 @@ const checkRowsColumns = () => {
 
 
   const handleClick = (row, col) => {
+    console.log(deck);
     // Check if the input is a valid number
     const number = parseInt(inputNumber, 10);
     if (isNaN(number)) {
@@ -141,9 +175,6 @@ const checkRowsColumns = () => {
       return;
     }
     generateRandomNumber(seed);
-    setSeed(prevSeed => prevSeed + 1);
-
-
 
   };
   
@@ -185,7 +216,6 @@ return (
 
     <div>
       Current Score: {currentScore}
-      
     </div>
 
     <div>
@@ -219,8 +249,11 @@ return (
     </div>
 
       <div> {seed} </div>
-
+      <button onClick={shuffle}>Shuffle Deck</button>
   </div>
+
+
+
 );
 
 };
