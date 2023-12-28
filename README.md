@@ -5,11 +5,10 @@ Welcome to Poker Bingo, a fun and engaging React app that challenges you to fill
 
 ## How to Play
 1. Visit the [Poker Bingo App](https://pokerbingo.vercel.app/) website.
-2. Drag and drop playing cards onto the 5x5 board to create lines.
+2. Drop playing cards onto the 5x5 board to create lines.
 3. The app automatically calculates your score based on the poker hands formed in each line.
 
 ## Features
-- Intuitive drag-and-drop interface.
 - Real-time scoring for each line on the board.
 - Endless possibilities for creating unique poker hands.
 
