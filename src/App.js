@@ -11,27 +11,45 @@ import {
   isTwoPair,
   isJacksOrBetter,
 } from './PokerFunctions';
-import seedrandom from 'seedrandom';
 
 const Grid = () => {
   const [grid, setGrid] = useState(Array(5).fill(Array(5).fill(-1)));
   const [inputNumber, setInputNumber] = useState('');
   const [generatedNumbers, setGeneratedNumbers] = useState([]);
-  const [used, setUsed] = useState([]);
   const [currentScore, setCurrentScore] = useState(0);
   const [played, setPlayed] = useState(0);
   const [isGameOver, setGameOver] = useState(false);
-  const [results, setResults] = useState([]);
-  const [seed, setSeed] = useState(1);
+  // const [seed, setSeed] = useState(13);
   const [inputValue, setInputValue] = useState('');
   const [deck, setDeck] = useState(Array.from({ length: 52 }, (_, index) => index + 1));
 
-  useEffect(() => {
+
+
+  window.onload = function() {
     document.title = "Video Poker";
-    const currentDate = new Date();
-    const dayOfMonth = currentDate.getDate();
-    setSeed(10000);
-  }, []);
+    shuffle();
+  };
+
+  // returns day since 1970 as an int (eastern timezone) 
+  const todaysSeed = () => {
+    const now = new Date(); // gets the current date and time
+    const utcMilliseconds = now.getTime(); // gets the UTC time in milliseconds
+    const utcSeconds = Math.floor(utcMilliseconds / 1000); // converts milliseconds to seconds
+  
+    // Adjust for Eastern Time Zone (UTC -5 hours)
+    const easternOffsetSeconds = 5 * 60 * 60;
+    const easternSeconds = utcSeconds - easternOffsetSeconds;
+  
+    // Calculate days since 1970 (in seconds) and convert to days
+    const secondsInDay = 24 * 60 * 60;
+    const daysSince1970 = Math.floor(easternSeconds / secondsInDay);
+  
+    return daysSince1970;
+  };
+
+  const seed = todaysSeed();
+
+  
 
   // const generateRandomNumber = (seed) => {
   //   const rng = seedrandom(seed);
@@ -70,7 +88,6 @@ const Grid = () => {
       shuffledDeck[currentIndex] = shuffledDeck[randomIndex];
       shuffledDeck[randomIndex] = temporaryValue;
     }
-  
     setDeck(shuffledDeck);
   };
   
@@ -188,12 +205,6 @@ const handleSeedInputChange = (event) => {
   setInputValue(event.target.value);
 };
 
-const handleSeedButtonClick = () => {
-  const seedAsNumber = parseInt(inputValue, 10); 
-  setSeed(seedAsNumber);
-};
-
-
 
 
 return (
@@ -208,10 +219,7 @@ return (
 
     <button onClick={refreshPage}>Refresh Page</button>
 
-   
-    {/* <button onClick={checkRowsColumns}>
-      Check Score 
-    </button> */}
+  
 
 
     <div>
@@ -238,18 +246,6 @@ return (
       </div>
     ))}
 
-    <div>
-    <input
-        type="number"
-        value={inputValue}
-        onChange={handleSeedInputChange}
-        placeholder="Enter seed"
-        />
-        <button onClick={handleSeedButtonClick}>Set Seed</button>
-    </div>
-
-      <div> {seed} </div>
-      <button onClick={shuffle}>Shuffle Deck</button>
   </div>
 
 
