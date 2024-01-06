@@ -23,7 +23,12 @@ const Grid = () => {
   const [inputValue, setInputValue] = useState('');
   const [deck, setDeck] = useState(Array.from({ length: 52 }, (_, index) => index + 1));
 
-
+  //check for gameover
+  useEffect(() => {
+    if (isGameOver) {
+      return; // emoji score later
+    }
+  });
 
   window.onload = function() {
     document.title = "Video Poker";
@@ -97,6 +102,9 @@ const Grid = () => {
     shuffleDeck();
   }
 
+
+
+
   function checkResult(numbers) {
     const checkFunctions = [
       { func: isStraightFlush, message: 'Straight Flush', reward: 100 },
@@ -160,7 +168,6 @@ const checkRowsColumns = () => {
 
 
   const handleClick = (row, col) => {
-    console.log(deck);
     // Check if the input is a valid number
     const number = parseInt(inputNumber, 10);
     if (isNaN(number)) {
